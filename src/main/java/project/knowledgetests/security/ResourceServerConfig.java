@@ -1,7 +1,6 @@
 package project.knowledgetests.security;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,9 +16,12 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/question/**").hasAuthority("SCOPE_profile")
-                .anyRequest().denyAll()
+                .anyRequest()
+                .denyAll()
                 .and()
                 .oauth2ResourceServer()
-                .jwt();
+                .jwt()
+                .jwtAuthenticationConverter(new JwtAuthConverter());
     }
 }
+
