@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import project.knowledgetests.contract.MessageResponseDTO;
 import project.knowledgetests.contract.QuestionRequestDTO;
 import project.knowledgetests.contract.QuestionResponseDTO;
 import project.knowledgetests.entity.Question;
@@ -22,8 +21,6 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionResponseMapper questionResponseMapper = QuestionResponseMapper.INSTANCE;
-    private final MessageResponseService messageResponseService;
-
 
     public List<QuestionResponseDTO> listAll() {
         final List<Question> questions = questionRepository.findAll();
@@ -40,27 +37,25 @@ public class QuestionService {
         return questionResponseMapper.toDTO(question);
     }
 
-    public MessageResponseDTO create(QuestionRequestDTO question) {
+    public QuestionResponseDTO create(QuestionRequestDTO question) {
         final Question questionToSave = questionResponseMapper.toModel(question);
 
         try {
             final Question savedQuestion = questionRepository.save(questionToSave);
-            return messageResponseService
-                    .createMessageResponse("Successfully created question with ID: " + savedQuestion.getId());
+            return questionResponseMapper.toDTO(savedQuestion);
 
         } catch (DataIntegrityViolationException e) {
             throw new ResourceAlreadyExistsException("This question already exists. You can't add same question twice.");
         }
     }
 
-    public MessageResponseDTO updateById(Long id, QuestionRequestDTO question) {
+    public QuestionResponseDTO updateById(Long id, QuestionRequestDTO question) {
         exists(id);
 
         Question questionToUpdate = questionResponseMapper.toModel(question);
         Question updatedQuestion = questionRepository.save(questionToUpdate);
 
-        return messageResponseService
-                .createMessageResponse("Successfully updated question with ID: " + updatedQuestion.getId());
+        return questionResponseMapper.toDTO(updatedQuestion);
 
     }
 
