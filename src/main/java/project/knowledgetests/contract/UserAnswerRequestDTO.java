@@ -21,6 +21,6 @@ public class UserAnswerRequestDTO {
     private Question questionReference;
 
     @NotEmpty
-    @Size(min = 1, max = 1024)
+    @Size(min = 1, max = 2048)
     private String answer;
 }

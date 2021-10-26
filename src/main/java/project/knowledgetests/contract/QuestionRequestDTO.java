@@ -17,10 +17,10 @@ public class QuestionRequestDTO {
     private Long id;
 
     @NotEmpty
-    @Size(min = 5, max = 1024)
+    @Size(min = 5, max = 4096)
     private String question;
 
     @NotEmpty
-    @Size(min = 1, max = 1024)
+    @Size(min = 1, max = 2048)
     private String answer;
 }

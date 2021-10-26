@@ -21,10 +21,10 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 4096)
     private String question;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2048)
     private String answer;
 
     @CreationTimestamp
