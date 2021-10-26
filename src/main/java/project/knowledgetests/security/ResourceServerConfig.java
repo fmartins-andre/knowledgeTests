@@ -13,11 +13,11 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
+        http.cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/question/**").hasAuthority("SCOPE_profile")
-                .anyRequest()
-                .denyAll()
+                .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer()
                 .jwt()
