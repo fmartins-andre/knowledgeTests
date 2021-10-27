@@ -16,10 +16,13 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
 
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: ${SECURITY_JWK_URI:http://192.168.1.235:7080/auth/realms/cri1.intra/protocol/openid-connect/certs}
-
