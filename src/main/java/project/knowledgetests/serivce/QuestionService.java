@@ -53,6 +53,7 @@ public class QuestionService {
         exists(id);
 
         Question questionToUpdate = questionResponseMapper.toModel(question);
+        questionToUpdate.setId(id);
         Question updatedQuestion = questionRepository.save(questionToUpdate);
 
         return questionResponseMapper.toDTO(updatedQuestion);
