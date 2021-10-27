@@ -1,17 +1,15 @@
 package project.knowledgetests.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "questions")
@@ -28,8 +26,10 @@ public class Question {
     private String answer;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private OffsetDateTime updatedAt;
 }
