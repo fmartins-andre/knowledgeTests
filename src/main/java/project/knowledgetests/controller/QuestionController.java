@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import project.knowledgetests.contract.QuestionRequestDTO;
-import project.knowledgetests.contract.QuestionResponseDTO;
+import project.knowledgetests.contract.question.QuestionRequestDTO;
+import project.knowledgetests.contract.question.QuestionResponseDTO;
 import project.knowledgetests.serivce.QuestionService;
 
 import javax.servlet.http.HttpServletResponse;
