@@ -3,7 +3,6 @@ package project.knowledgetests.config;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.TimeZone;
 
