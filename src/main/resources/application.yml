@@ -3,26 +3,17 @@ server:
     include-message: always
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: sa
+  profiles:
+    active: ${APP_ENV:dev}
+  application:
+    name: Knowledge Tests
   jpa:
-    database-plataform: org.hibernate.dialect.H2Dialect
-    show-sql: true
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         jdbc:
           time_zone: UTC
-
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${SECURITY_JWK_URI:http://192.168.1.235:7080/auth/realms/cri1.intra/protocol/openid-connect/certs}
+          jwk-set-uri: ${SECURITY_JWK_URI}
