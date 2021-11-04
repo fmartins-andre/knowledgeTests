@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import project.knowledgetests.contract.userAnswer.UserAnswerRequestDTO;
@@ -25,8 +27,10 @@ public class UserAnswerController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER_ANSWER_MAINTAINER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserAnswerResponseDTO create(@RequestBody @Valid UserAnswerRequestDTO answer, HttpServletResponse response) {
-        UserAnswerResponseDTO createdAnswer = userAnswerService.create(answer);
+    public UserAnswerResponseDTO create(@RequestBody @Valid UserAnswerRequestDTO answer,
+                                        HttpServletResponse response, @AuthenticationPrincipal Jwt principal) {
+
+        UserAnswerResponseDTO createdAnswer = userAnswerService.create(answer, principal);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

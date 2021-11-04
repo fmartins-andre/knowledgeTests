@@ -3,9 +3,11 @@ package project.knowledgetests.serivce;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import project.knowledgetests.contract.userAnswer.UserAnswerRequestDTO;
 import project.knowledgetests.contract.userAnswer.UserAnswerResponseDTO;
+import project.knowledgetests.entity.User;
 import project.knowledgetests.entity.UserAnswer;
 import project.knowledgetests.exception.ConstraintViolationException;
 import project.knowledgetests.exception.ResourceNotFoundException;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserAnswerService {
 
     private final UserAnswerRepository userAnswerRepository;
+    private final UserService userService;
     private final UserAnswerResponseMapper userAnswerResponseMapper = UserAnswerResponseMapper.INSTANCE;
     private final UserAnswerRequestMapperImpl userAnswerRequestMapper;
 
@@ -38,18 +41,20 @@ public class UserAnswerService {
         return userAnswerResponseMapper.toDTO(answer);
     }
 
-    public UserAnswerResponseDTO create(UserAnswerRequestDTO answer) {
+    public UserAnswerResponseDTO create(UserAnswerRequestDTO answer, Jwt principal) {
+        User user = userService.fromJwt(principal);
+
         try {
             final UserAnswer answerToSave = userAnswerRequestMapper.toModel(answer);
             if (answerToSave == null) throw new ConstraintViolationException("Question reference not found");
+            answerToSave.setUser(user);
 
             final UserAnswer savedAnswer = userAnswerRepository.save(answerToSave);
             return userAnswerResponseMapper.toDTO(savedAnswer);
 
         } catch (DataIntegrityViolationException e) {
             throw new ConstraintViolationException(
-                    "A conflict occurred while creating answer with ID " + answer.getId()
-                            + "'. Make sure all given data is respecting data constraints.");
+                    "A conflict occurred while creating an answer. You cannot answer the same question twice!");
         }
     }
 
@@ -63,7 +68,7 @@ public class UserAnswerService {
             UserAnswer updatedAnswer = userAnswerRepository.save(answerToUpdate);
             return userAnswerResponseMapper.toDTO(updatedAnswer);
 
-        } catch (DataIntegrityViolationException e ) {
+        } catch (DataIntegrityViolationException e) {
             throw new ConstraintViolationException(
                     "A conflict occurred while updating answer with ID " + answer.getId()
                             + "'. Make sure all given data is respecting data constraints.");

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.knowledgetests.contract.question.QuestionResponseDTO;
+import project.knowledgetests.contract.user.UserResponseDTO;
 
 import java.time.OffsetDateTime;
 
@@ -17,6 +18,7 @@ public class UserAnswerResponseDTO {
     private QuestionResponseDTO questionReference;
     private String question;
     private String answer;
+    private UserResponseDTO user;
     private Byte scoreByOwnUser;
     private Byte score;
     private OffsetDateTime createdAt;
