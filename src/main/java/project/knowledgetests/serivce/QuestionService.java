@@ -56,7 +56,9 @@ public class QuestionService {
             return questionResponseMapper.toDTO(savedQuestion);
 
         } catch (DataIntegrityViolationException e) {
-            throw new ConstraintViolationException("This question already exists. You can't add same question twice.");
+            throw new ConstraintViolationException(
+                    "A conflict occurred while creating a question. "
+                    + "Make sure all given data is respecting data constraints.");
         }
     }
 
@@ -71,7 +73,9 @@ public class QuestionService {
             return questionResponseMapper.toDTO(updatedQuestion);
 
         } catch (DataIntegrityViolationException e) {
-            throw new ConstraintViolationException("This question already exists. You can't add same question twice.");
+            throw new ConstraintViolationException(
+                    "A conflict occurred while updating question with ID " + id
+                        + "'. Make sure all given data is respecting data constraints.");
         }
     }
 

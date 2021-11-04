@@ -70,7 +70,7 @@ public class UserAnswerService {
 
         } catch (DataIntegrityViolationException e) {
             throw new ConstraintViolationException(
-                    "A conflict occurred while updating answer with ID " + answer.getId()
+                    "A conflict occurred while updating answer with ID " + id
                             + "'. Make sure all given data is respecting data constraints.");
         }
     }

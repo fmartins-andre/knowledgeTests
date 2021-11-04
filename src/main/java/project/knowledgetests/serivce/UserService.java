@@ -26,7 +26,7 @@ public class UserService {
     private final UserResponseMapper userResponseMapper = UserResponseMapper.INSTANCE;
     private final UserRequestMapper userRequestMapper = UserRequestMapper.INSTANCE;
 
-    public List<UserResponseDTO> findAll() {
+    public List<UserResponseDTO> listAll() {
         return userRepository.findAll().stream().map(userResponseMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -60,15 +60,14 @@ public class UserService {
         exists(id);
 
         User userToUpdate = userRequestMapper.toModel(user);
-        user.setId(id);
+        userToUpdate.setId(id);
 
         try {
             User updatedUser = userRepository.save(userToUpdate);
             return userResponseMapper.toDTO(updatedUser);
         } catch (DataIntegrityViolationException e) {
             throw new ConstraintViolationException(
-                    "A conflict occurred while updating user '"
-                            + user.getUsername()
+                    "A conflict occurred while updating user with ID: '" + id
                             + "'. Make sure all given data is respecting data constraints.");
         }
     }
