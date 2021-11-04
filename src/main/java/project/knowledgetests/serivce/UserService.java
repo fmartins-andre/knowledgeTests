@@ -3,6 +3,7 @@ package project.knowledgetests.serivce;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import project.knowledgetests.contract.user.UserRequestDTO;
 import project.knowledgetests.contract.user.UserResponseDTO;
@@ -13,6 +14,7 @@ import project.knowledgetests.mapper.UserRequestMapper;
 import project.knowledgetests.mapper.UserResponseMapper;
 import project.knowledgetests.repository.UserRepository;
 
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class UserService {
     }
 
     public UserResponseDTO findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = exists(username);
 
         if (user == null) throw new ResourceNotFoundException("User not found with username: " + username);
 
@@ -74,6 +76,31 @@ public class UserService {
     public void delete(Long id) {
         User user = exists(id);
         userRepository.delete(user);
+    }
+
+    public User fromJwt(Jwt principal) {
+        if (principal == null) throw new ValidationException("Could not find username in authentication credentials");
+
+        User contextUser = exists(principal.getClaimAsString("preferred_username"));
+        if (contextUser != null) return contextUser;
+
+        User userToSave = new User();
+        userToSave.setUsername(principal.getClaimAsString("preferred_username"));
+        userToSave.setFullName(principal.getClaimAsString("name"));
+
+        try {
+            return userRepository.save(userToSave);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConstraintViolationException(
+                    "A conflict occurred while persisting user '"
+                            + principal.getClaimAsString("preferred_username")
+                            + "' to database.");
+        }
+
+    }
+
+    private User exists(String username) {
+        return userRepository.findByUsername(username);
     }
 
     private User exists(Long id) {
