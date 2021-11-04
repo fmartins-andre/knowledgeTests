@@ -4,21 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import project.knowledgetests.contract.user.UserByUsernameRequestDTO;
 import project.knowledgetests.contract.user.UserResponseDTO;
-import project.knowledgetests.exception.ConstraintViolationException;
 import project.knowledgetests.serivce.UserService;
 
-import javax.validation.Valid;
-import javax.xml.bind.ValidationException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user")
