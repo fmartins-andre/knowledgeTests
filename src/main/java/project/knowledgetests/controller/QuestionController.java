@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import project.knowledgetests.contract.question.QuestionRequestDTO;
@@ -62,5 +64,10 @@ public class QuestionController {
         questionService.delete(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_QUESTION_VIEWER')")
+    @GetMapping("/daily")
+    public List<QuestionResponseDTO> getDailyQuestions(@AuthenticationPrincipal Jwt principal) {
+        return questionService.getDailyQuestions(principal);
+    }
 
 }
