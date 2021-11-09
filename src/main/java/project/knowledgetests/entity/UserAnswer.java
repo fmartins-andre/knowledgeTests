@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -15,7 +16,7 @@ import java.time.OffsetDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints = { @UniqueConstraint( columnNames = {"QUESTION_REFERENCE_ID", "USER_ID"} )})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"QUESTION_REFERENCE_ID", "USER_ID", "CREATION_DATE"})})
 public class UserAnswer {
 
     @Id
@@ -39,6 +40,10 @@ public class UserAnswer {
     private Byte scoreByOwnUser;
 
     private Byte score;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false, name = "CREATION_DATE")
+    private LocalDate creationDate;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

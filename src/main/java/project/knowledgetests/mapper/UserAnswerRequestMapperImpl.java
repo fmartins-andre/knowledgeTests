@@ -13,8 +13,6 @@ public class UserAnswerRequestMapperImpl {
 
     @Autowired
     QuestionService questionService;
-    @Autowired
-    private QuestionRequestMapper questionRequestMapper;
 
     public UserAnswer toModel(UserAnswerRequestDTO answer) {
         if (answer == null) return null;
