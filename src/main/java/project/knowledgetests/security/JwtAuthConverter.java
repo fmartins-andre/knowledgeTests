@@ -1,6 +1,5 @@
 package project.knowledgetests.security;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,7 +38,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     }
 
     @Override
-    public AbstractAuthenticationToken convert(@NotNull Jwt source) {
+    public AbstractAuthenticationToken convert(Jwt source) {
 
         Collection<GrantedAuthority> authorities = Stream.concat(
                 jwtGrantedAuthoritiesConverter.convert(source).stream(),

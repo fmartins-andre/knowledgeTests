@@ -1,6 +1,5 @@
 package project.knowledgetests.config;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -17,7 +16,7 @@ public class EnvironmentConfiguration implements EnvironmentAware {
     }
 
     @Override
-    public void setEnvironment(@NotNull Environment environment) {
+    public void setEnvironment(Environment environment) {
         EnvironmentConfiguration.environment = environment;
     }
 }
