@@ -14,7 +14,15 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/h2/**");
+
+        web.ignoring().antMatchers(
+                "/h2/**",
+                "/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui/**",
+                "/webjars/**");
     }
 
     @Override
